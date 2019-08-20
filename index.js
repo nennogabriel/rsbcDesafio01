@@ -3,7 +3,7 @@ const express = require("express");
 const server = express();
 server.use(express.json());
 
-const fakedb = [
+let fakedb = [
   {
     id: "1",
     title: "Novo Projeto",
@@ -27,6 +27,14 @@ server.put("/projects/:id", (req, res) => {
     if (obj.id === id) {
       obj.title = title;
     }
+  });
+  return res.json(fakedb);
+});
+
+server.delete("/projects/:id", (req, res) => {
+  const { id } = req.params;
+  fakedb = fakedb.filter(obj => {
+    return obj.id != id;
   });
   return res.json(fakedb);
 });
