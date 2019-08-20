@@ -20,4 +20,15 @@ server.post("/projects", (req, res) => {
   return res.json(fakedb);
 });
 
+server.put("/projects/:id", (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  fakedb.map(obj => {
+    if (obj.id === id) {
+      obj.title = title;
+    }
+  });
+  return res.json(fakedb);
+});
+
 server.listen(3000);
