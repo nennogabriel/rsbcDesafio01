@@ -39,4 +39,15 @@ server.delete("/projects/:id", (req, res) => {
   return res.json(fakedb);
 });
 
+server.post("/projects/:id/tasks", (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  fakedb.map(obj => {
+    if (obj.id === id) {
+      obj.tasks.push(title);
+    }
+  });
+  return res.json(fakedb);
+});
+
 server.listen(3000);
