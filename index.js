@@ -5,6 +5,19 @@ server.use(express.json());
 
 let fakedb = [];
 
+function checkIdExists(req, res, next) {
+  const { id } = req.params;
+  let found = false;
+  fakedb.map(obj => {
+    if (obj.id == id) {
+      found = true;
+    }
+  });
+  return found
+    ? next()
+    : res.status(400).json({ error: "Project id not found." });
+}
+
 server.get("/projects", (req, res) => {
   return res.json(fakedb);
 });
@@ -14,7 +27,7 @@ server.post("/projects", (req, res) => {
   return res.json(fakedb);
 });
 
-server.put("/projects/:id", (req, res) => {
+server.put("/projects/:id", checkIdExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
   fakedb.map(obj => {
@@ -25,7 +38,7 @@ server.put("/projects/:id", (req, res) => {
   return res.json(fakedb);
 });
 
-server.delete("/projects/:id", (req, res) => {
+server.delete("/projects/:id", checkIdExists, (req, res) => {
   const { id } = req.params;
   fakedb = fakedb.filter(obj => {
     return obj.id != id;
@@ -33,11 +46,14 @@ server.delete("/projects/:id", (req, res) => {
   return res.json(fakedb);
 });
 
-server.post("/projects/:id/tasks", (req, res) => {
+server.post("/projects/:id/tasks", checkIdExists, (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
   fakedb.map(obj => {
     if (obj.id === id) {
+      if (!obj.tasks) {
+        obj.tasks = [];
+      }
       obj.tasks.push(title);
     }
   });
