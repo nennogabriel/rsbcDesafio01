@@ -3,13 +3,7 @@ const express = require("express");
 const server = express();
 server.use(express.json());
 
-let fakedb = [
-  {
-    id: "1",
-    title: "Novo Projeto",
-    tasks: ["Nova tarefa"]
-  }
-];
+let fakedb = [];
 
 server.get("/projects", (req, res) => {
   return res.json(fakedb);
