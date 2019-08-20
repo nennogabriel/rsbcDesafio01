@@ -4,6 +4,13 @@ const server = express();
 server.use(express.json());
 
 let fakedb = [];
+let counter = 0;
+
+server.use((req, res, next) => {
+  counter++;
+  console.log(`${counter} requisições feitas até o momento`);
+  return next();
+});
 
 function checkIdExists(req, res, next) {
   const { id } = req.params;
