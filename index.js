@@ -15,4 +15,9 @@ server.get("/projects", (req, res) => {
   return res.json(fakedb);
 });
 
+server.post("/projects", (req, res) => {
+  fakedb.push(req.body);
+  return res.json(fakedb);
+});
+
 server.listen(3000);
